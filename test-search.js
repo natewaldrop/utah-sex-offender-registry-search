@@ -5,7 +5,7 @@
         return new Promise((resolve) => {
             setTimeout(() => {
                 resolve(`Result for ${firstName} ${lastName}`); // Mock result
-            }, 500);
+            }, 1);
         });
     }
 
