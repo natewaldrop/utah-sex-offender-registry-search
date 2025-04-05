@@ -1,10 +1,10 @@
 (async function() {
     // Mock API call function
-    async function mockApiCall(name) {
+    async function mockApiCall(firstName, lastName) {
         // Simulate an asynchronous API call with a delay
         return new Promise((resolve) => {
             setTimeout(() => {
-                resolve(`Result for ${name}`); // Mock result
+                resolve(`Result for ${firstName} ${lastName}`); // Mock result
             }, 500);
         });
     }
@@ -38,10 +38,9 @@
         if (!nameCell) continue;
         // Split the name into last name and first name
         const [lastName, firstName] = nameCell.textContent.trim().split(',').map(part => part.trim());
-        const name = nameCell.textContent.trim();
-
+        
         // Make the mock API call
-        const result = await mockApiCall(name);
+        const result = await mockApiCall(firstName, lastName);
 
         // Add a new cell with the result
         const resultCell = document.createElement('td');
