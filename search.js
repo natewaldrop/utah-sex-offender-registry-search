@@ -2,9 +2,7 @@ async function searchOffenderRegistry(firstName, lastName) {
     const headers = {
         "Content-Type": "application/json",
         "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Host": "nsopw-api.ojp.gov",
-        "no-cors": "true" // This header is not standard but included to avoid CORS issues in some environments
+        "Accept-Encoding": "gzip, deflate, br"
 
     };
 
