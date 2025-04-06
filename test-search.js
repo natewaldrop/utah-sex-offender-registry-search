@@ -79,7 +79,7 @@
         if (existingResultCell) {
             const cellText = existingResultCell.textContent.trim();
             if (cellText.startsWith('Total Records')) {
-            console.log('Row already processed:', cellText);
+            // console.log('Row already processed:', cellText);
             continue; // Skip this row
             } else if (cellText === 'Error fetching data') {
             console.log('Previous run failed. Removing error cell.');
@@ -113,7 +113,7 @@
         try {
             let parsedResult;
             let retryCount = 0;
-            const maxRetries = 3;
+            const maxRetries = 5;
 
             while (retryCount <= maxRetries) {
                 try {
@@ -127,8 +127,9 @@
                     // Check if the error is due to rate limiting (429)
                     if (error.message.includes('429')) {
                         if (retryCount < maxRetries) {
-                            console.log(`Rate limit exceeded. Waiting for 3 seconds... (Retry ${retryCount + 1}/${maxRetries})`);
-                            await new Promise(resolve => setTimeout(resolve, 3000));
+                            const backoffTime = Math.pow(2, retryCount) * 1000; // Exponential backoff
+                            console.log(`Rate limit exceeded. Waiting for ${backoffTime / 1000} seconds... (Retry ${retryCount + 1}/${maxRetries})`);
+                            await new Promise(resolve => setTimeout(resolve, backoffTime));
                             retryCount++;
                             continue;
                         } else {
@@ -143,7 +144,6 @@
                     }
                     console.log(`Error occurred. Retrying... (${retryCount + 1}/${maxRetries})`);
                     retryCount++;
-                    await new Promise(resolve => setTimeout(resolve, 3000));
                 }
             }
 
