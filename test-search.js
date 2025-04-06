@@ -1,14 +1,4 @@
 (async function() {
-    // Mock API call function
-    async function mockApiCall(firstName, lastName) {
-        // Simulate an asynchronous API call with a delay
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve(`Result for ${firstName} ${lastName}`); // Mock result
-            }, 1);
-        });
-    }
-
     // Function to call the actual API
     async function callApi(firstName, lastName, age) {
         const response = await fetch('https://o2spihb7uavvqzebliupustaki0heywl.lambda-url.us-west-2.on.aws/', {
@@ -30,7 +20,6 @@
         return JSON.stringify({ totalRecords });
 
         
-        // return `Fact: ${data.fact}, Length: ${data.length}`;
     }
 
     // Extract the table with class "table member-list"
@@ -64,9 +53,14 @@
         // Split the name into last name and first name
         const [lastName, firstName] = nameCell.textContent.trim().split(',').map(part => part.trim());
         
+        const ageCell = row.querySelector('age');
+        if (!ageCell) continue;
+        const age = ageCell.textContent.trim();
+
+
         // Make the mock API call
         // const result = await mockApiCall(firstName, lastName);
-        const result = await callApi(firstName, lastName);
+        const result = await callApi(firstName, lastName, age);
 
         // Add a new cell with the result
         const resultCell = document.createElement('td');
