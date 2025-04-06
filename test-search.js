@@ -58,9 +58,9 @@
         // Split the name into last name and first name
         const [lastName, firstName] = nameCell.textContent.trim().split(',').map(part => part.trim());
         
-        const ageCell = row.querySelector('age');
-        if (!ageCell) continue;
-        const age = ageCell.textContent.trim();
+        // const ageCell = row.querySelector('age');
+        // if (!ageCell) continue;
+        // const age = ageCell.textContent.trim();
 
 
         // Make the mock API call
