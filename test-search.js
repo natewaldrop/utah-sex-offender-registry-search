@@ -65,9 +65,10 @@
 
         try {
             const result = await callApi(firstName, lastName);
-            const totalRecords = result.data.jurisdictionStatus.reduce((sum, status) => sum + (status.records || 0), 0);
+            console.log('API result:', result);
+            const totalRecords = result.jurisdictionStatus.reduce((sum, status) => sum + (status.records || 0), 0);
             // Create a summary of offenders
-            const offenders = result.data.offenders || [];
+            const offenders = result.offenders || [];
             const offenderLinks = offenders.map(offender => {
                 const { givenName, surName, gender, age, offenderUri } = offender;
                 return `<a href="${offenderUri}" target="_blank">${givenName} ${surName} (${gender}, ${age})</a>`;
