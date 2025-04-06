@@ -65,7 +65,7 @@
 
         // Make the mock API call
         // const result = await mockApiCall(firstName, lastName);
-        const result = await callApi(firstName, lastName, age);
+        const result = await callApi(firstName, lastName, 0);
 
         // Add a new cell with the result
         const resultCell = document.createElement('td');
