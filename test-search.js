@@ -15,8 +15,10 @@
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            // body: JSON.stringify({ firstName, lastName }),
+                'Accept': 'application/json',
+                'User-Agent': 'PostmanRuntime/7.32.3',
+                'Accept-Encoding': 'gzip, deflate, br',
+            }
         });
 
         if (!response.ok) {
