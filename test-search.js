@@ -10,14 +10,12 @@
     }
 
     // Function to call the actual API
-    async function callApi(firstName, lastName) {
+    async function callApi(firstName, lastName, age) {
         const response = await fetch('https://o2spihb7uavvqzebliupustaki0heywl.lambda-url.us-west-2.on.aws/', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'User-Agent': 'PostmanRuntime/7.32.3',
-                'Accept-Encoding': 'gzip, deflate, br',
             }
         });
 
@@ -26,7 +24,15 @@
         }
 
         const data = await response.json();
-        return `Fact: ${data.fact}, Length: ${data.length}`;
+        // data should have a statusCode an array of jurisdictionStatus with a count of records, and an array of offenders with an age
+        // total number of records is the sum of all jurisdictionStatus counts
+        const totalRecords = data.jurisdictionStatus.reduce((sum, status) => sum + status.count, 0);
+        
+        // return the totalRecords as a json object
+        return JSON.stringify({ totalRecords });
+
+        
+        // return `Fact: ${data.fact}, Length: ${data.length}`;
     }
 
     // Extract the table with class "table member-list"
@@ -51,8 +57,9 @@
         headerRow.appendChild(newHeader);
     }
 
+    testRows = rows.slice(0, 5); // Limit to first 5 rows for testing
     // Process each row
-    for (const row of rows) {
+    for (const row of testRows) {
         // Extract the name (assuming it's in the first cell)
         const nameCell = row.querySelector('td.n.fn a');
         if (!nameCell) continue;
