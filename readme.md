@@ -47,3 +47,5 @@ It returns the list of results as though you had manually searched with first an
 ## FAQ
 * ? Why is it so slow?
     * The NSOPW is pretty stingy with rate limiting - this tool attempts to slow things down so it can function 
+* Did it stop?
+    * If it gets enough 429 responses from the NSOPW database, it will cool down for 1 minute before continuing
