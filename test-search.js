@@ -24,10 +24,8 @@
         }
 
         const data = await response.json();
-        // data should have a statusCode an array of jurisdictionStatus with a count of records, and an array of offenders with an age
-        // total number of records is the sum of all jurisdictionStatus counts
-        const totalRecords = data.jurisdictionStatus.reduce((sum, status) => sum + status.count, 0);
-        
+        // Calculate the total number of records from jurisdictionStatus
+        const totalRecords = data.jurisdictionStatus.reduce((sum, status) => sum + (status.records || 0), 0);
         // return the totalRecords as a json object
         return JSON.stringify({ totalRecords });
 
