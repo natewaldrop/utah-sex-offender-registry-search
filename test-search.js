@@ -50,17 +50,8 @@
         headerRow.appendChild(resultHeader);
     }
 
-
-    // pick a random row to test
-    const randomIndex = Math.floor(Math.random() * rows.length - 1);
-
-    const testRows = Array.from(rows).slice(randomIndex, randomIndex + 1);
-    console.log('Test rows:', testRows.length);
-    console.log('Test rows:', testRows);
-
-
     // Process each row
-    for (const row of testRows) {
+    for (const row of rows) {
 
         // Extract the name (assuming it's in the first cell)
         const nameCell = row.querySelector('td.n.fn a');
@@ -73,7 +64,7 @@
             console.error('Invalid age:', ageCell.textContent.trim());
             continue;
         } else {
-            console.log('Member Age:', memberAge);
+            // console.log('Member Age:', memberAge);
         }
         const sexCell = row.querySelector('.sex');
         const memberSex = sexCell.textContent.trim();
@@ -81,10 +72,10 @@
             console.error('Invalid memberSex:', sexCell.textContent.trim());
             continue;
         }else{
-            console.log('Member Sex:', memberSex);
+            // console.log('Member Sex:', memberSex);
         }
 
-        console.log('Name:', firstName + ' ' + lastName + ' (' + memberAge + ')' + memberSex);
+        console.log('Name:', firstName + ' ' + lastName + ' (' + memberSex + '-' + memberAge + ') ');
 
         try {
             const result = await callApi(firstName, lastName);
@@ -135,7 +126,7 @@
         }
 
 
-        await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second delay
+        await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second delay - to avoid rate limiting
     }
 
     alert('Processing complete!');
