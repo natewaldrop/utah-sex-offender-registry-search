@@ -49,10 +49,43 @@
         resultHeader.textContent = 'Result';
         headerRow.appendChild(resultHeader);
     }
+    // Add a stop button to the page
+    let stopExecution = false;
+    const stopButton = document.createElement('button');
+    stopButton.textContent = 'Stop Script';
+    stopButton.style.position = 'fixed';
+    stopButton.style.top = '10px';
+    stopButton.style.right = '10px';
+    stopButton.style.zIndex = '1000';
+    stopButton.addEventListener('click', () => {
+        stopExecution = true;
+        alert('Script execution stopped.');
+    });
+    document.body.appendChild(stopButton);
+    
+
+
+
 
     // Process each row
     for (const row of rows) {
-
+        // Check if the script should stop
+        if (stopExecution) {
+            alert('Script execution stopped by user.');
+            break;
+        }
+        // Check if the row is already processed
+        const existingResultCell = row.querySelector('td:last-child');
+        if (existingResultCell) {
+            const cellText = existingResultCell.textContent.trim();
+            if (cellText.startsWith('Total Records')) {
+            console.log('Row already processed:', cellText);
+            continue; // Skip this row
+            } else if (cellText === 'Error fetching data') {
+            console.log('Previous run failed. Removing error cell.');
+            existingResultCell.remove(); // Remove the error cell
+            }
+        }
         // Extract the name (assuming it's in the first cell)
         const nameCell = row.querySelector('td.n.fn a');
         if (!nameCell) continue;
@@ -78,16 +111,40 @@
         console.log('Name:', firstName + ' ' + lastName + ' (' + memberSex + '-' + memberAge + ') ');
 
         try {
-            const result = await callApi(firstName, lastName);
+            let parsedResult;
+            let retryCount = 0;
+            const maxRetries = 3;
 
-            const parsedResult = JSON.parse(result);
-            console.log('Parsed result:', parsedResult);
-            // if statusCode is 429, wait for 3 seconds and retry
-            if (parsedResult.statusCode === 429) {
-                console.log('Rate limit exceeded. Waiting for 3 seconds...');
-                await new Promise(resolve => setTimeout(resolve, 3000));
-                const retryResult = await callApi(firstName, lastName);
-                parsedResult = JSON.parse(retryResult);
+            while (retryCount <= maxRetries) {
+                try {
+                    const result = await callApi(firstName, lastName);
+                    parsedResult = JSON.parse(result);
+                    console.log('Parsed result:', parsedResult);
+                    
+                    // Exit the loop if no error occurs
+                    break;
+                } catch (error) {
+                    // Check if the error is due to rate limiting (429)
+                    if (error.message.includes('429')) {
+                        if (retryCount < maxRetries) {
+                            console.log(`Rate limit exceeded. Waiting for 3 seconds... (Retry ${retryCount + 1}/${maxRetries})`);
+                            await new Promise(resolve => setTimeout(resolve, 3000));
+                            retryCount++;
+                            continue;
+                        } else {
+                            console.error('Max retries reached due to rate limiting.');
+                            throw error;
+                        }
+                    }
+
+                    if (retryCount >= maxRetries) {
+                        console.error('Error after maximum retries:', error);
+                        throw error;
+                    }
+                    console.log(`Error occurred. Retrying... (${retryCount + 1}/${maxRetries})`);
+                    retryCount++;
+                    await new Promise(resolve => setTimeout(resolve, 3000));
+                }
             }
 
             const totalRecords = parsedResult.data.jurisdictionStatus.reduce((sum, status) => sum + (status.records || 0), 0);
@@ -126,8 +183,6 @@
         }
 
 
-        await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second delay - to avoid rate limiting
+        await new Promise(resolve => setTimeout(resolve, 5000)); // 5 second delay - to avoid rate limiting
     }
-
-    alert('Processing complete!');
 })();
