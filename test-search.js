@@ -47,7 +47,7 @@
         headerRow.appendChild(newHeader);
     }
 
-    const testRows = Array.from(rows).slice(0, 5); // Limit to first 5 rows for testing
+    const testRows = Array.from(rows).slice(10, 2);
     // Process each row
     for (const row of testRows) {
         // Extract the name (assuming it's in the first cell)
