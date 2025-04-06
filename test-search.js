@@ -1,7 +1,12 @@
 (async function() {
     // Function to call the actual API
     async function callApi(firstName, lastName, age) {
-        const response = await fetch('https://o2spihb7uavvqzebliupustaki0heywl.lambda-url.us-west-2.on.aws/', {
+        const url = new URL('https://o2spihb7uavvqzebliupustaki0heywl.lambda-url.us-west-2.on.aws/');
+        url.searchParams.append('firstName', firstName);
+        url.searchParams.append('lastName', lastName);
+        url.searchParams.append('age', age);
+
+        const response = await fetch(url.toString(), {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
