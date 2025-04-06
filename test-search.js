@@ -9,6 +9,24 @@
         });
     }
 
+    // Function to call the actual API
+    async function callApi(firstName, lastName) {
+        const response = await fetch('https://7uzhwevhnl7uggklyf5nnh4fjy0fgpbm.lambda-url.us-west-2.on.aws/', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ firstName, lastName }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`API call failed with status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return `Fact: ${data.fact}, Length: ${data.length}`;
+    }
+
     // Extract the table with class "table member-list"
     const table = document.querySelector('.table.member-list');
     if (!table) {
@@ -40,7 +58,8 @@
         const [lastName, firstName] = nameCell.textContent.trim().split(',').map(part => part.trim());
         
         // Make the mock API call
-        const result = await mockApiCall(firstName, lastName);
+        // const result = await mockApiCall(firstName, lastName);
+        const result = await callApi(firstName, lastName);
 
         // Add a new cell with the result
         const resultCell = document.createElement('td');
