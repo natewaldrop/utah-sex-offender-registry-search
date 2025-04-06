@@ -64,7 +64,7 @@
     document.body.appendChild(stopButton);
     
 
-
+    let total429 = 0;
 
 
     // Process each row
@@ -131,6 +131,7 @@
                             console.log(`Rate limit exceeded. Waiting for ${backoffTime / 1000} seconds... (Retry ${retryCount + 1}/${maxRetries})`);
                             await new Promise(resolve => setTimeout(resolve, backoffTime));
                             retryCount++;
+                            total429++;
                             continue;
                         } else {
                             console.error('Max retries reached due to rate limiting.');
@@ -182,7 +183,16 @@
             row.appendChild(resultCell);
         }
 
+        console.log('Row processed:', firstName + ' ' + lastName + ' (' + memberSex + '-' + memberAge + ') ');
+        if (total429 >= 10) {
+            console.log('Too many 429s - cooling down for 1 minute', total429);
+            await new Promise(resolve => setTimeout(resolve, 60000)); // 1 minute delay - to avoid rate limiting
+            total429 = 0; // Reset the counter after cooling down
 
-        await new Promise(resolve => setTimeout(resolve, 5000)); // 5 second delay - to avoid rate limiting
+        }else{
+            console.log('Waiting for 5 seconds before next request...');
+            await new Promise(resolve => setTimeout(resolve, 5000)); // 5 second delay - to avoid rate limiting
+        }
+        
     }
 })();
