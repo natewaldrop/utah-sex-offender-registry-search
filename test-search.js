@@ -22,7 +22,7 @@
         // Calculate the total number of records from jurisdictionStatus
         const totalRecords = data.jurisdictionStatus.reduce((sum, status) => sum + (status.records || 0), 0);
         // return the totalRecords as a json object
-        return JSON.stringify({ totalRecords });
+        return JSON.stringify({ data });
 
         
     }
