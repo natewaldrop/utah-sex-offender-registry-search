@@ -11,7 +11,7 @@
 
     // Function to call the actual API
     async function callApi(firstName, lastName) {
-        const response = await fetch('https://7uzhwevhnl7uggklyf5nnh4fjy0fgpbm.lambda-url.us-west-2.on.aws/', {
+        const response = await fetch('https://o2spihb7uavvqzebliupustaki0heywl.lambda-url.us-west-2.on.aws/', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
