@@ -34,7 +34,7 @@ This script takes the names from your member directory and performs the search f
 It returns the list of results as though you had manually searched with first and last name on the [NSOPW website](https://www.nsopw.gov/search-public-sex-offender-registries)
 
 * If no records are returned a new column will be added with **"Total Records: 0"**
-* If there are records returned, it will load all records in and do a simple check on age and sex. If those don't match, it will strike the record through. 
+* If there are records returned, it will load all records in and do a simple check on age and sex. If those don't match (+/- 1 year), it will strike the record through. 
 * All records are linked to their various jurisdiction pages
 * You can verify these names and alias' by reviewing the source jurisdiction page
 
