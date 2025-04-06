@@ -165,7 +165,7 @@
                 if (!isAgeMatch || !isSexMatch) {
                     return `<a href="${offenderUri}" target="_blank"><s>${givenName} ${surName} (${gender}, ${age})</s></a>`;
                 } else {
-                    return `<a href="${offenderUri}" target="_blank">${givenName} ${surName} (${gender}, ${age})</a>`;
+                    return `<a href="${offenderUri}" target="_blank"><strong>${givenName} ${surName} (${gender}, ${age})</strong></a>`;
                 }
                 // Create a link for the offender
 
